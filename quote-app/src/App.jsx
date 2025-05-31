@@ -1,37 +1,34 @@
-import React, { useState, useEffect } from "react"; // ✅ Import necessary React hooks
-import axios from "axios"; // 📦 Import Axios for API calls
-import QuoteCard from "./components/QuoteCard"; // 🧩 Import QuoteCard component
-import QuoteButton from "./components/QuoteButton"; // 🧩 Import QuoteButton component
-import ThemeToggle from "./components/ThemeToggle"; // 🧩 Import ThemeToggle component
+import { useState, useEffect } from "react";
+import axios from "axios";
+import QuoteCard from "./components/QuoteCard";
+import QuoteButton from "./components/QuoteButton";
+import ThemeToggle from "./components/ThemeToggle";
 
 function App() {
   const [quote, setQuote] = useState({
     q: "The only way to do great work is to love what you do.",
     a: "Steve Jobs",
-  }); // 💡 State for current quote
-  const [theme, setTheme] = useState("light"); // 💡 State for theme (light/dark)
-  const [fontSize, setFontSize] = useState("text-xl"); // 💡 State for font size
-  const [isLiked, setIsLiked] = useState(false); // 💡 State for like functionality
+  });
+  const [theme, setTheme] = useState("light");
+  const [fontSize, setFontSize] = useState("text-xl");
+  const [isLiked, setIsLiked] = useState(false);
 
-  // 🚀 Function to fetch a new quote from the API
   const fetchQuote = async () => {
     try {
       const response = await axios.get("https://zenquotes.io/api/random");
-      const data = response.data[0]; // ZenQuotes API returns an array
+      const data = response.data[0];
       setQuote({ q: data.q, a: data.a });
-      setIsLiked(false); // Reset like status for new quote
+      setIsLiked(false);
     } catch (error) {
-      console.error("Error fetching quote:", error); // 🚨 Error handling
+      console.error("Error fetching quote:", error);
       setQuote({ q: "Failed to fetch quote. Please try again.", a: "Error" });
     }
   };
 
-  // 🔄 Fetch a quote on initial load
   useEffect(() => {
     fetchQuote();
   }, []);
 
-  // 🌓 Function to toggle theme
   const toggleTheme = () => {
     setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
   };
@@ -56,12 +53,9 @@ function App() {
   return (
     <div className={appClasses}>
       {" "}
-      {/* 🌐 Main application container */}
       <h1 className="text-4xl font-bold mb-8">Motivational Quotes</h1>{" "}
-      {/* 🌟 App title */}
       <div className="mb-8">
         {" "}
-        {/* 💡 Theme toggle and font size dropdown */}
         <ThemeToggle currentTheme={theme} toggleTheme={toggleTheme} />
         <select
           onChange={handleFontSizeChange}
@@ -70,7 +64,7 @@ function App() {
             theme === "light"
               ? "bg-white text-gray-800 border border-gray-300"
               : "bg-gray-700 text-white border border-gray-600"
-          }`} // 🎨 Dynamic select styling
+          }`}
         >
           <option value="text-lg">Small</option>
           <option value="text-xl">Medium</option>
@@ -84,10 +78,8 @@ function App() {
         fontSize={fontSize}
         themeColor={theme}
       />{" "}
-      {/* 📝 QuoteCard display */}
       <div className="mt-8 flex space-x-4">
         {" "}
-        {/* uttons for interaction */}
         <QuoteButton
           onClick={fetchQuote}
           className={`${
@@ -97,7 +89,6 @@ function App() {
           }`}
         >
           {" "}
-          {/* 🔄 New Quote button */}
           New Quote
         </QuoteButton>
         <QuoteButton
@@ -109,7 +100,6 @@ function App() {
           }`}
         >
           {" "}
-          {/* ❤️ Like button */}
           {isLiked ? "Liked! 👍" : "Like Quote ❤️"}
         </QuoteButton>
       </div>
@@ -117,4 +107,4 @@ function App() {
   );
 }
 
-export default App; // 📦 Export the main App component
+export default App;
